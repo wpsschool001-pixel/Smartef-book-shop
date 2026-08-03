@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Smartef Bookshop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles.css" />
+<script src="https://js.paystack.co/v1/inline.js"></script>
+<!-- Google Analytics: replace G-J09WZNNN4S below with your real Measurement ID from analytics.google.com -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-J09WZNNN4S"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-J09WZNNN4S');
+</script>
+<!-- Google AdSense: uncomment and replace ca-pub-XXXXXXXXXXXXXXXX once your AdSense account is approved -->
+<!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap header-row">
+    <div class="brand">
+      <img class="brand-logo" src="/logo.jpg" alt="Smartef Bookshop logo" />
+      <div class="brand-text">
+        <h1>Smartef Bookshop</h1>
+        <p>read smarter</p>
+      </div>
+    </div>
+    <div class="search-wrap">
+      <input id="searchInput" type="search" placeholder="Search by title or author…" aria-label="Search books" />
+      <span class="search-count" id="resultCount" aria-live="polite"></span>
+    </div>
+    <div class="account-wrap">
+      <button id="wishlistBtn" class="chip" type="button">♡ Wishlist <span id="wishlistCount">(0)</span></button>
+      <button id="inviteBtn" class="chip" type="button">🔗 Invite & earn</button>
+      <a id="adminLink" class="chip" href="/admin.html" hidden>Admin portal</a>
+      <span id="accountUsername"></span>
+      <button id="logoutBtn" class="chip" type="button">Log out</button>
+    </div>
+  </div>
+</header>
+
+<main>
+
+  <section class="wishlist-section" id="wishlistSection" hidden aria-labelledby="wishlistHeading">
+    <div class="wrap">
+      <div class="catalog-head">
+        <h2 id="wishlistHeading">Your reading list</h2>
+        <button class="chip" id="closeWishlistBtn" type="button">Back to browsing</button>
+      </div>
+      <div class="grid" id="wishlistGrid"></div>
+      <p class="empty-state" id="wishlistEmptyState" hidden>
+        Nothing saved yet — tap "+ Save to reading list" on any book to add it here.
+      </p>
+    </div>
+  </section>
+
+  <section class="shelf-section" id="mainBrowse" aria-labelledby="shelfHeading">
+    <div class="wrap">
+      <h2 id="shelfHeading">Pull one off the shelf</h2>
+      <p class="shelf-hint">Spine width follows page count. Click a spine to open it.</p>
+    </div>
+    <div class="shelf-scroll" id="shelfScroll" role="list" aria-label="Featured books, browsable as a shelf">
+      <!-- spines injected here -->
+    </div>
+    <div class="shelf-ledge" aria-hidden="true"></div>
+  </section>
+
+  <section class="catalog-section" id="mainCatalog" aria-labelledby="catalogHeading">
+    <div class="wrap">
+      <div class="catalog-head">
+        <h2 id="catalogHeading">Full catalog</h2>
+        <select id="sortSelect" aria-label="Sort books">
+          <option value="title">Title, A–Z</option>
+          <option value="newest">Newest first</option>
+          <option value="rating">Highest rated</option>
+          <option value="price_asc">Price, low to high</option>
+          <option value="price_desc">Price, high to low</option>
+        </select>
+      </div>
+
+      <div class="chip-row" id="chipRow" role="tablist" aria-label="Filter by section">
+        <button class="chip is-active" data-category="" role="tab" aria-selected="true">All sections</button>
+        <!-- category chips injected here -->
+      </div>
+
+      <div class="grid" id="bookGrid" aria-live="polite">
+        <!-- book cards injected here -->
+      </div>
+
+      <p class="empty-state" id="emptyState" hidden>
+        Nothing on the shelf matches that. Try another title, author, or section.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Ad slot: once AdSense is approved, replace this div's contents with your <ins class="adsbygoogle"> ad unit code -->
+<div class="wrap" id="adSlot" style="margin:24px auto; text-align:center; min-height:90px;">
+  <!-- AdSense ad unit goes here -->
+</div>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <p>Smartef Bookshop — read smarter. · <a href="/privacy.html" style="color:inherit;">Privacy Policy</a></p>
+  </div>
+</footer>
+
+<!-- Detail panel -->
+<div class="panel-backdrop" id="panelBackdrop"></div>
+<aside class="detail-panel" id="detailPanel" aria-hidden="true" aria-labelledby="detailTitle">
+  <button class="panel-close" id="panelClose" aria-label="Close book details">×</button>
+  <div class="panel-body" id="panelBody">
+    <!-- filled by JS -->
+  </div>
+</aside>
+
+<!-- Invite panel -->
+<div class="panel-backdrop" id="invitePanelBackdrop" style="display:none;"></div>
+<div id="invitePanel" style="display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); background:#fff; color:#1a1a1a; padding:24px; border-radius:12px; max-width:360px; width:90%; z-index:1000; box-shadow:0 10px 40px rgba(0,0,0,0.3);">
+  <h3 style="margin-top:0;">Invite friends</h3>
+  <p style="font-size:14px;">Share your link. Anyone who signs up through it is tracked as your referral.</p>
+  <input id="inviteLinkInput" readonly style="width:100%; padding:8px; box-sizing:border-box; margin-bottom:10px;" />
+  <div style="display:flex; gap:8px; flex-wrap:wrap;">
+    <button id="inviteCopyBtn" class="btn" type="button">Copy link</button>
+    <a id="inviteWhatsapp" class="btn" target="_blank" rel="noopener">WhatsApp</a>
+    <a id="inviteTwitter" class="btn" target="_blank" rel="noopener">Twitter/X</a>
+    <a id="inviteFacebook" class="btn" target="_blank" rel="noopener">Facebook</a>
+  </div>
+  <button id="inviteCloseBtn" class="chip" type="button" style="margin-top:14px;">Close</button>
+</div>
+
+<script src="/app.js"></script>
+</body>
+</html>
